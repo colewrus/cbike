@@ -4,8 +4,11 @@ using UnityEngine;
 
 public class spawnScript : MonoBehaviour {
 
+    public static spawnScript instance = null;
+
     public List<GameObject> Platforms = new List<GameObject>();
     public float timeToSpawn; //like tears in rain
+    public float spawnStart;
 
     List<GameObject> currentObj = new List<GameObject>();
     public bool runSpawn;
@@ -14,18 +17,40 @@ public class spawnScript : MonoBehaviour {
     public int selection;
     public int selector;
 
-	// Use this for initialization
-	void Start () {
+
+    private void Awake()
+    {
+        if (instance == null)
+            instance = this;
+        else if (instance != this)
+            Destroy(gameObject);
+    }
+
+    // Use this for initialization
+    void Start () {
+        spawnStart = timeToSpawn;
         stopWatch = 1;
         selection = Random.Range(0, Platforms.Count);
         Init_Pool();
         runSpawn = true;
+        selector = Random.Range(0, Platforms.Count);
+        Vector3 pos = new Vector3(this.transform.position.x+1, Random.Range(2, 2.35f), transform.position.z);
+        GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
+        currentObj.Add(tempObj);
     }
 
+    public void SpawnPlatform(Vector3 pos)
+    {
+       
+        selector = Random.Range(0, Platforms.Count);        
+        Debug.Log(pos);
+        GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
+        currentObj.Add(tempObj);
+    }
 
     void Init_Pool()
     {
-        Vector3 pos = new Vector3(this.transform.position.x, Random.Range(2, 2.45f), transform.position.z);
+        Vector3 pos = new Vector3(this.transform.position.x, Random.Range(2, 2.35f), transform.position.z);
         for (int i = 0; i < Platforms.Count; i++)
         {
             GameObject tempObj = (GameObject)Instantiate(Platforms[i], pos, Quaternion.identity);
@@ -58,7 +83,7 @@ public class spawnScript : MonoBehaviour {
             {
                 return;
             }
-            Vector3 pos = new Vector3(this.transform.position.x, Random.Range(2, 2.45f), transform.position.z);
+            Vector3 pos = new Vector3(this.transform.position.x, Random.Range(2, 2.35f), transform.position.z);
             GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
             currentObj.Add(tempObj);
 
@@ -76,9 +101,7 @@ public class spawnScript : MonoBehaviour {
         Debug.Log("respawn");
         
         for (int i = 0; i < currentObj.Count; i++)
-        {
-            
-            
+        {       
             currentObj[i].SetActive(false);
             /*
             currentObj[i].transform.position = this.transform.position;
