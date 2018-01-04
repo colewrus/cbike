@@ -13,8 +13,10 @@ public class Son : MonoBehaviour {
 
 
     Rigidbody2D rb;
-    bool grounded; //did you touch the ground recently?
-    
+    public bool grounded; //did you touch the ground recently?
+
+    public float gravity;
+
     float yVel; //variable y velocity to help manage jumping & falling
     public float xVel;
 
@@ -31,7 +33,7 @@ public class Son : MonoBehaviour {
         grounded = false;
       
         pressTime = 0;
-        yVel = -2;
+        yVel = gravity;
         decayJump = false;
         boosting = false;
 	}
@@ -46,13 +48,14 @@ public class Son : MonoBehaviour {
         {
             pressTime += 1* Time.deltaTime;
             if (grounded)
-            {
-                
+            {                
                 rb.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
                 yVel = 1f;
-                grounded = false; 
+                grounded = false;
             }
         }
+
+
 
         JumpChecks();
         BoostCheck();
@@ -65,18 +68,22 @@ public class Son : MonoBehaviour {
     {
         if (transform.position.y <= 1.0f)
         {
+            spawnScript.instance.runSpawn = false;
             this.gameObject.transform.position = startPos.position + (transform.up * 0.5f);
             camFollow.instance.groundSpeed = camFollow.instance.startSpeed;
             spawnScript.instance.timeToSpawn = spawnScript.instance.spawnStart;            
-            Debug.Log(camFollow.instance.groundSpeed);
+            
             spawnObj.GetComponent<spawnScript>().ResetGround();
-            Debug.Log(spawnObj.GetComponent<spawnScript>().runSpawn);
+            
             startObj.transform.position = startPos.position;
             startObj.gameObject.SetActive(true);
-            spawnScript.instance.SpawnPlatform(new Vector3(2.2f, 2.5f, 0));
+            spawnScript.instance.SpawnPlatform(new Vector3(1, 2.5f, 0), 0);
+            camFollow.instance.score = 0;
+            spawnScript.instance.runSpawn = true;
         }
-
     }
+
+
 
     void JumpChecks()
     {
@@ -122,6 +129,8 @@ public class Son : MonoBehaviour {
         }
     }
 
+
+
     void BoostCheck()
     {
         float bandtime = 0;
@@ -133,11 +142,14 @@ public class Son : MonoBehaviour {
             curr_Time += Time.deltaTime;
             Vector3 boostPos = transform.position + transform.right * xVel;
             transform.position = Vector3.Lerp(transform.position, boostPos, curr_Time);
+            grounded = false;
         }
 
         if (boosting && xVel <= 0f)
         {
             boosting = false;
+            grounded = true;
+            yVel = gravity;
         }
         
 
@@ -147,15 +159,14 @@ public class Son : MonoBehaviour {
     {
         boosting = true;        
         xVel = newX;
-        yVel = 0;
-        grounded = true;
+        yVel = 0;        
     }
  
     void JumpDecay()
     {
-       if(yVel > -2)
+       if(yVel > gravity)
         {
-            yVel -= 8 * Time.deltaTime;           
+            yVel -= 12 * Time.deltaTime;           
         }
         else
         {
@@ -168,7 +179,7 @@ public class Son : MonoBehaviour {
     {
         yield return new WaitForSeconds(0.3f);
         decayJump = true;
-        yVel = -1;
+        yVel = gravity;
     }
 
 

@@ -33,18 +33,19 @@ public class spawnScript : MonoBehaviour {
         selection = Random.Range(0, Platforms.Count);
         Init_Pool();
         runSpawn = true;
+
         selector = Random.Range(0, Platforms.Count);
-        Vector3 pos = new Vector3(this.transform.position.x+1, Random.Range(2, 2.35f), transform.position.z);
+        Vector3 pos = new Vector3(this.transform.position.x+1, Random.Range(2.6f, 2.35f), transform.position.z);
         GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
-        currentObj.Add(tempObj);
+        currentObj.Add(tempObj);        
     }
 
-    public void SpawnPlatform(Vector3 pos)
+    public void SpawnPlatform(Vector3 pos, int ID)
     {
        
         selector = Random.Range(0, Platforms.Count);        
         Debug.Log(pos);
-        GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
+        GameObject tempObj = (GameObject)Instantiate(Platforms[ID], pos, Quaternion.identity);
         currentObj.Add(tempObj);
     }
 
@@ -68,7 +69,7 @@ public class spawnScript : MonoBehaviour {
     public void SpawnToggle()
     {
 
-        if (stopWatch < timeToSpawn)
+        if (stopWatch < timeToSpawn && runSpawn)
         {
             stopWatch += Time.deltaTime;
         }

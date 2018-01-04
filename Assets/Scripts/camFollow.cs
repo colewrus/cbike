@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class camFollow : MonoBehaviour {
 
@@ -9,6 +10,10 @@ public class camFollow : MonoBehaviour {
     public GameObject jesu;
     public Vector3 offset;
     public float groundSpeed;
+
+    public float score;
+    public Text counter;
+    
 
     public Transform despawnPoint;
 
@@ -29,13 +34,21 @@ public class camFollow : MonoBehaviour {
     void Start () {
         timer = 0;
         startSpeed = groundSpeed;
+        score = 0;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         SpeedModifier();
         this.transform.position = new Vector3(jesu.transform.position.x + offset.x, Mathf.Clamp(jesu.transform.position.y, 2.2f, 3), offset.z);
+        ScoreTick();
 	}
+
+    void ScoreTick()
+    {
+        score += 2.5f * Time.deltaTime;
+        counter.text = "Score: " + Mathf.FloorToInt(score);
+    }
 
     void SpeedModifier()
     {

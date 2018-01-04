@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 896ec1f1f50552048a793d5e7ceb26ad
+timeCreated: 1515028467
+licenseType: Free
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Augustus
+  fontNames:
+  - Augustus
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
