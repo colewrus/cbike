@@ -19,6 +19,7 @@ public class Son : MonoBehaviour {
 
     float yVel; //variable y velocity to help manage jumping & falling
     public float xVel;
+    Vector3 storedVelocity;
 
     bool decayJump;
     public bool boosting;
@@ -73,12 +74,13 @@ public class Son : MonoBehaviour {
             camFollow.instance.groundSpeed = camFollow.instance.startSpeed;
             spawnScript.instance.timeToSpawn = spawnScript.instance.spawnStart;            
             
-            spawnObj.GetComponent<spawnScript>().ResetGround();
+           spawnScript.instance.ResetGround();
             
             startObj.transform.position = startPos.position;
             startObj.gameObject.SetActive(true);
-            spawnScript.instance.SpawnPlatform(new Vector3(1, 2.5f, 0), 0);
+            
             camFollow.instance.score = 0;
+            spawnScript.instance.SpawnPlatform(new Vector3(1.0f, 2.5f, 0), 0);
             spawnScript.instance.runSpawn = true;
         }
     }
