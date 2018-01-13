@@ -35,7 +35,7 @@ public class spawnScript : MonoBehaviour {
         runSpawn = true;
 
         selector = Random.Range(0, Platforms.Count);
-        Vector3 pos = new Vector3(this.transform.position.x+1, Random.Range(2.6f, 2.35f), transform.position.z);
+        Vector3 pos = new Vector3(this.transform.position.x+1.4f, Random.Range(2.6f, 2.35f), transform.position.z);
         GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
         currentObj.Add(tempObj);        
     }
@@ -108,11 +108,12 @@ public class spawnScript : MonoBehaviour {
             currentObj[i].transform.position = this.transform.position;
             */
             stopWatch = 0;
+            /*
             selector = Random.Range(0, Platforms.Count);
             Vector3 pos = new Vector3(this.transform.position.x, Random.Range(2, 2.45f), transform.position.z);
             currentObj[selection].transform.position = pos;
             currentObj[selection].SetActive(true);
-            
+            */
         }
         
     }

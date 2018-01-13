@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.IO;
+
+
 
 public class camFollow : MonoBehaviour {
 
@@ -13,7 +18,8 @@ public class camFollow : MonoBehaviour {
 
     public float score;
     public Text counter;
-    
+
+    public float speedRate;
 
     public Transform despawnPoint;
 
@@ -58,7 +64,7 @@ public class camFollow : MonoBehaviour {
         }
         else
         {
-            groundSpeed += 0.1f;
+            groundSpeed += speedRate;
             if(spawnScript.instance.timeToSpawn > 1.5f)
             {
                 spawnScript.instance.timeToSpawn -= 0.25f;
