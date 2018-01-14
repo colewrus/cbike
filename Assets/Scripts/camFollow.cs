@@ -17,7 +17,14 @@ public class camFollow : MonoBehaviour {
     public float groundSpeed;
 
     public float score;
+    public bool runScore;
+    public List<int> HighScore = new List<int>();
     public Text counter;
+
+    public string key_0;
+    public string key_1;
+    public string key_2;
+    public string key_3;
 
     public float speedRate;
 
@@ -41,13 +48,18 @@ public class camFollow : MonoBehaviour {
         timer = 0;
         startSpeed = groundSpeed;
         score = 0;
+        HighScore[0] = PlayerPrefs.GetInt(key_0, 0);
+        HighScore[1] = PlayerPrefs.GetInt(key_1, 0);
+        HighScore[2] = PlayerPrefs.GetInt(key_2, 0);
+        runScore = true;
 	}
 	
 	// Update is called once per frame
 	void Update () {
         SpeedModifier();
         this.transform.position = new Vector3(jesu.transform.position.x + offset.x, Mathf.Clamp(jesu.transform.position.y, 2.2f, 3), offset.z);
-        ScoreTick();
+        if(runScore)
+            ScoreTick();
 	}
 
     void ScoreTick()

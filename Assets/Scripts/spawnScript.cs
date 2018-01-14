@@ -35,7 +35,7 @@ public class spawnScript : MonoBehaviour {
         runSpawn = true;
 
         selector = Random.Range(0, Platforms.Count);
-        Vector3 pos = new Vector3(this.transform.position.x+1.4f, Random.Range(2.6f, 2.35f), transform.position.z);
+        Vector3 pos = new Vector3(this.transform.position.x+1, Random.Range(2.6f, 2.35f), transform.position.z);
         GameObject tempObj = (GameObject)Instantiate(Platforms[selector], pos, Quaternion.identity);
         currentObj.Add(tempObj);        
     }
@@ -44,7 +44,7 @@ public class spawnScript : MonoBehaviour {
     {
        
         selector = Random.Range(0, Platforms.Count);        
-        Debug.Log(pos);
+       
         GameObject tempObj = (GameObject)Instantiate(Platforms[ID], pos, Quaternion.identity);
         currentObj.Add(tempObj);
     }
@@ -63,13 +63,14 @@ public class spawnScript : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        SpawnToggle();
+        if(runSpawn)
+            SpawnToggle();
     }
 
     public void SpawnToggle()
     {
 
-        if (stopWatch < timeToSpawn && runSpawn)
+        if (stopWatch < timeToSpawn)
         {
             stopWatch += Time.deltaTime;
         }
@@ -99,7 +100,7 @@ public class spawnScript : MonoBehaviour {
 
     public void ResetGround()
     {
-        Debug.Log("respawn");
+        
         
         for (int i = 0; i < currentObj.Count; i++)
         {       
