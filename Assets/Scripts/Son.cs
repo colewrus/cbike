@@ -80,7 +80,7 @@ public class Son : MonoBehaviour {
             startObj.gameObject.SetActive(true);
             
             camFollow.instance.score = 0;
-            spawnScript.instance.SpawnPlatform(new Vector3(1.0f, 2.5f, 0), 0);
+            spawnScript.instance.SpawnPlatform(new Vector3(0f, 2.5f, 0), 0);
             spawnScript.instance.runSpawn = true;
         }
     }

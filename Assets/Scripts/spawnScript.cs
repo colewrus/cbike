@@ -9,6 +9,7 @@ public class spawnScript : MonoBehaviour {
     public List<GameObject> Platforms = new List<GameObject>();
     public float timeToSpawn; //like tears in rain
     public float spawnStart;
+    public float spawnStart2;
 
     List<GameObject> currentObj = new List<GameObject>();
     public bool runSpawn;
@@ -41,11 +42,11 @@ public class spawnScript : MonoBehaviour {
     }
 
     public void SpawnPlatform(Vector3 pos, int ID)
-    {
-       
+    {       
         selector = Random.Range(0, Platforms.Count);        
-        Debug.Log(pos);
+        
         GameObject tempObj = (GameObject)Instantiate(Platforms[ID], pos, Quaternion.identity);
+        Debug.Log(tempObj.transform.position);
         currentObj.Add(tempObj);
     }
 
