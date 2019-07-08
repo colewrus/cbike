@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class Son : MonoBehaviour {
 
@@ -10,8 +11,9 @@ public class Son : MonoBehaviour {
     public GameObject startObj;
     public Transform startPos;
     public GameObject spawnObj;
+    public GameObject postdeathPanel;
 
-
+    bool checkScore;
     Rigidbody2D rb;
     public bool grounded; //did you touch the ground recently?
 
@@ -37,6 +39,9 @@ public class Son : MonoBehaviour {
         yVel = gravity;
         decayJump = false;
         boosting = false;
+
+        checkScore = false;
+        postdeathPanel.SetActive(false);
 	}
 
     void Update()
@@ -55,20 +60,47 @@ public class Son : MonoBehaviour {
                 grounded = false;
             }
         }
-
-
-
+                
         JumpChecks();
         BoostCheck();
-        Dash();
-        DeathCheck();
-
+        Dash(); 
     }
 
     void DeathCheck()
     {
-        if (transform.position.y <= 1.0f)
+        camFollow.instance.runScore = false;
+        if(checkScore)
+            HighScore();
+        //pause shit
+        spawnScript.instance.runSpawn = false;
+        camFollow.instance.groundSpeed = 0;
+        spawnScript.instance.timeToSpawn = 0;
+        speed = 0;
+        camFollow.instance.score = 0;
+        postdeathPanel.SetActive(true);
+    }
+
+
+    public void PostDeathResume()
+    {
+        startObj.transform.position = startPos.position;
+        this.gameObject.transform.position = startPos.position + (transform.up * 1.5f) + (transform.right*-1);
+        spawnObj.GetComponent<spawnScript>().ResetGround();
+        startObj.gameObject.SetActive(true);
+        spawnScript.instance.SpawnPlatform(new Vector3(1, 2.5f, 0), 0);
+        spawnScript.instance.runSpawn = true;
+        camFollow.instance.groundSpeed = camFollow.instance.startSpeed;
+        spawnScript.instance.timeToSpawn = spawnScript.instance.spawnStart;
+        camFollow.instance.runScore = true;
+        postdeathPanel.SetActive(false);
+    }
+
+    void HighScore()
+    {
+
+        for(int i=0; i < camFollow.instance.HighScore.Count; i++)
         {
+
             spawnScript.instance.runSpawn = false;
             this.gameObject.transform.position = startPos.position + (transform.up * 0.5f);
             camFollow.instance.groundSpeed = camFollow.instance.startSpeed;
@@ -82,10 +114,19 @@ public class Son : MonoBehaviour {
             camFollow.instance.score = 0;
             spawnScript.instance.SpawnPlatform(new Vector3(0f, 2.5f, 0), 0);
             spawnScript.instance.runSpawn = true;
+
+
         }
+        PlayerPrefs.SetInt(camFollow.instance.key_0, camFollow.instance.HighScore[0]);
+        PlayerPrefs.SetInt(camFollow.instance.key_1, camFollow.instance.HighScore[1]);
+        PlayerPrefs.SetInt(camFollow.instance.key_2, camFollow.instance.HighScore[2]);
+        postdeathPanel.transform.GetChild(0).GetComponent<Text>().text = "" + camFollow.instance.HighScore[0];
+        postdeathPanel.transform.GetChild(1).GetComponent<Text>().text = "" + camFollow.instance.HighScore[1];
+        postdeathPanel.transform.GetChild(2).GetComponent<Text>().text = "" + camFollow.instance.HighScore[2];
+        checkScore = false;
+        //Debug.Log(PlayerPrefs.GetInt(camFollow.instance.key_0).ToString());
+
     }
-
-
 
     void JumpChecks()
     {
@@ -129,6 +170,13 @@ public class Son : MonoBehaviour {
                 pressTime = 0;
             }
         }
+
+        if (collision.gameObject.tag == "reset")
+        {
+            Debug.Log("reset");
+            checkScore = true;
+            DeathCheck();
+        }
     }
 
 
@@ -171,8 +219,7 @@ public class Son : MonoBehaviour {
             yVel -= 12 * Time.deltaTime;           
         }
         else
-        {
-            
+        {            
             decayJump = false;
         }
     }

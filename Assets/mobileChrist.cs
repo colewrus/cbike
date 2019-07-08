@@ -8,14 +8,15 @@ public class mobileChrist : MonoBehaviour {
     public float direction;
     Rigidbody2D rb;
     public float speed;
-    public float jumpMin;
+    public float jumpMin; //----- Jump Vars
+    bool jump;
 
     //Touch vars
     float tapTimer;
 
     float width;
     float height;
-
+    public FixedJoystick myJoystick;
 
     Vector3 position;
 
@@ -27,6 +28,7 @@ public class mobileChrist : MonoBehaviour {
     {
         width = (float)Screen.width / 2.0f;
         height = (float)Screen.height / 2.0f;
+        Debug.Log(Screen.width + ", " + Screen.height);
     }
 
 
@@ -35,14 +37,22 @@ public class mobileChrist : MonoBehaviour {
 
         rb = gameObject.GetComponent<Rigidbody2D>();
         anim = GetComponent<Animator>();
+        jump = false;
 
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void FixedUpdate () {
+        JoystickMovement();
 	}
 
+
+
+    void JoystickMovement()
+    {
+        if(myJoystick.Horizontal != 0 || myJoystick.Vertical != 0)
+            Debug.Log(myJoystick.Horizontal + ", " + myJoystick.Vertical);
+    }
 
     void Movement() 
     {
@@ -62,7 +72,7 @@ public class mobileChrist : MonoBehaviour {
             }
 
 
-            if(touch.phase = TouchPhase.Moved)
+            if(touch.phase == TouchPhase.Moved)
             {
                 Vector2 pos = touch.position;
 
@@ -74,6 +84,15 @@ public class mobileChrist : MonoBehaviour {
         }
 
 
+    }
+
+    public void Jump()
+    {
+        Debug.Log("jump");
+        if (!jump)
+        {
+
+        }
     }
 
 }
